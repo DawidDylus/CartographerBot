@@ -1,21 +1,25 @@
 import os
 import discord
 from keep_alive import keep_alive
+
+from commands import onMessage
+
 secretToken = os.environ['TOKEN']
 
-client = discord.Client()
+bot = discord.Client()
 
-@client.event
+@bot.event
 async def on_ready():
-  print("Another Day, another adventure for the {0.user}".format(client))
+  print("Another Day, another adventure for the {0.user}".format(bot))
 
-@client.event
+@bot.event
 async def on_message(message):
-  if message.author == client:
+  # Ignore messages send by bot
+  if message.author == bot:
     return
 
-  if message.content.startswith('$hello'):
-    await message.channel.send('Welcome to my shop, traveler!')
+  await onMessage(message)
+
 
 keep_alive()
-client.run(secretToken)
+bot.run(secretToken)
